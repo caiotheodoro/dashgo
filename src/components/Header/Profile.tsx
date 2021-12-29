@@ -12,7 +12,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
                     <Text>
                         teste
                     </Text>
-                    <Text color="gray.300" fontSIze="small">
+                    <Text color="gray.300" fontSize="small">
                         teste@teste.com
                     </Text>
                 </Box>
