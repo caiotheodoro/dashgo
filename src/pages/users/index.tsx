@@ -12,14 +12,32 @@ import { useQuery } from 'react-query';
 export default function UserList() {
     const { data, error, isLoading } = useQuery('users', async () => {
         const response = await fetch('http://localhost:3000/api/users')
-        const data = response.json()
-        return data
+        const data = await response.json()
+        
+        const users = data.users.map((user) => {
+            return {
+                 id: user.id,
+                 name: user.name,
+                 email: user.email,
+                 createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                 }),
+          } 
+                  
+              
+      
+      });
+        return users;
+
     });
 
     const isWideVersion = useBreakpointValue({
         base: false,
         lg: true,
     });
+
 
     useEffect(() => {
 
@@ -62,18 +80,19 @@ export default function UserList() {
                                         </Tr>
                                     </Thead>
                                     <Tbody>
-                                        <Tr>
+                                     {  data.map((user) => (
+                                            <Tr key={user.id}>
                                             <Td px={["4", "4", "6"]}>
                                                 <Checkbox colorScheme="pink" />
                                             </Td>
                                             <Td>
                                                 <Box>
-                                                    <Text fontWeight="bold">Caio Theodoro</Text>
-                                                    <Text fontSize="sm" color="gray.300">caio.atla@gmail.com</Text>
+                                                    <Text fontWeight="bold">{user.name}</Text>
+                                                    <Text fontSize="sm" color="gray.300">{user.email}</Text>
                                                 </Box>
                                             </Td>
                                             {isWideVersion && <Td>
-                                                04 de abril, 2020
+                                                {user.createdAt}
                                             </Td>}
                                             <Td>
                                                 <Button
@@ -86,6 +105,7 @@ export default function UserList() {
                                                 </Button>
                                             </Td>
                                         </Tr>
+                                     ))}
                                     </Tbody>
                                 </Table>
                                 <Pagination />
