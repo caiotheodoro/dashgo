@@ -5,7 +5,7 @@ interface PaginationProps {
     totalCountOfRegisters: number;
     registersPerPage?: number;
     currentPage?: number;
-    onChangePage: (page: number) => void;
+    onPageChange: (page: number) => void;
 }
 
 const siblingsCount = 1;
@@ -18,8 +18,8 @@ function generatePagesArray(from: number, to: number){
 export function Pagination({
 totalCountOfRegisters,
 registersPerPage = 10,
-currentPage = 1,
-onChangePage
+currentPage,
+onPageChange
 }: PaginationProps) {
 
     const lastPage = Math.floor(totalCountOfRegisters / registersPerPage);
@@ -46,7 +46,7 @@ onChangePage
                 {   currentPage > (siblingsCount + 1) && (
                     <>
 
-                    <PaginationItem  number={1}  />
+                    <PaginationItem onPageChange={onPageChange}  number={1}  />
                     {currentPage > (siblingsCount + 2) && <Text color="gray.300" width={"8"} textAlign={"center"}>...</Text>}
                     </>
                 )
@@ -54,18 +54,18 @@ onChangePage
                 }
 
                 {previousPage.length > 0 && previousPage.map(page => {
-                    return  <PaginationItem key={page} number={page}  />
+                    return  <PaginationItem onPageChange={onPageChange} key={page} number={page}  />
                 })}
 
-                <PaginationItem  number={currentPage} isCurrent />
+                <PaginationItem onPageChange={onPageChange}  number={currentPage} isCurrent />
                 {nextPage.length > 0 && nextPage.map(page => {
-                    return  <PaginationItem key={page} number={page}  />
+                    return  <PaginationItem onPageChange={onPageChange} key={page} number={page}  />
                 })}
 
                 {   currentPage + siblingsCount < lastPage && (
                     <>
                     {currentPage + siblingsCount + 1 < lastPage && <Text color="gray.300" width={"8"} textAlign={"center"}>...</Text>}
-                    <PaginationItem  number={lastPage}  />
+                    <PaginationItem onPageChange={onPageChange}  number={lastPage}  />
                     </>
                 )}
                 
