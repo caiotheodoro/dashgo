@@ -7,14 +7,17 @@ import { Sidebar } from '../../components/Sidebar';
 import NextLink from 'next/link';
 import {  useState } from 'react';
 
-import { useUsers } from '../../services/hooks/users/useUsers';
+import { getUsers, useUsers } from '../../services/hooks/users/useUsers';
 import { queryClient } from '../../services/queryClient';
 import { api } from '../../services/api';
+import { GetServerSideProps } from 'next';
 
 
-export default function UserList() {
+export default function UserList(/*{users}*/) {
     const [page, setPage] = useState(1);
-    const { data, error, isLoading, isFetching } = useUsers(page)
+    const { data, error, isLoading, isFetching } = useUsers(page/*, {
+        initialData: users,
+    }*/)
 
     const isWideVersion = useBreakpointValue({
         base: false,
@@ -114,3 +117,14 @@ export default function UserList() {
         </Box>
     )
 }
+/*
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const {users, totalCount} = await getUsers(1)
+
+    return {
+        props: {
+            users,
+            totalCount,
+        },
+    }
+}*/
